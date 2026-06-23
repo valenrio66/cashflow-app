@@ -1,5 +1,4 @@
 import { supabaseAdmin } from "@/lib/supabase";
-import { TransactionPayload } from "@/types";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -9,17 +8,33 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body: TransactionPayload = await request.json();
+    const rawBody: any = await request.json();
+
+    const cleanSourceId =
+      rawBody.source_wallet_id === "null" ||
+      rawBody.source_wallet_id === "" ||
+      !rawBody.source_wallet_id
+        ? null
+        : Number(rawBody.source_wallet_id);
+
+    const cleanDestId =
+      rawBody.destination_wallet_id === "null" ||
+      rawBody.destination_wallet_id === "" ||
+      !rawBody.destination_wallet_id
+        ? null
+        : Number(rawBody.destination_wallet_id);
+
+    const cleanAmount = Number(rawBody.amount);
 
     const { data, error } = await supabaseAdmin
       .from("transactions")
       .insert([
         {
-          type: body.type,
-          source_wallet_id: body.source_wallet_id,
-          destination_wallet_id: body.destination_wallet_id,
-          amount: body.amount,
-          description: body.description,
+          type: rawBody.type,
+          source_wallet_id: cleanSourceId,
+          destination_wallet_id: cleanDestId,
+          amount: cleanAmount,
+          description: rawBody.description,
         },
       ])
       .select()
