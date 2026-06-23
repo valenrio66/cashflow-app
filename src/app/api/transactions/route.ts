@@ -11,16 +11,12 @@ export async function POST(request: Request) {
     const rawBody: any = await request.json();
 
     const cleanSourceId =
-      rawBody.source_wallet_id === "null" ||
-      rawBody.source_wallet_id === "" ||
-      !rawBody.source_wallet_id
+      rawBody.source_wallet_id === "" || !rawBody.source_wallet_id
         ? null
         : Number(rawBody.source_wallet_id);
 
     const cleanDestId =
-      rawBody.destination_wallet_id === "null" ||
-      rawBody.destination_wallet_id === "" ||
-      !rawBody.destination_wallet_id
+      rawBody.destination_wallet_id === "" || !rawBody.destination_wallet_id
         ? null
         : Number(rawBody.destination_wallet_id);
 
