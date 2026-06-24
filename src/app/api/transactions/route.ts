@@ -56,3 +56,60 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const limitParam = searchParams.get("limit");
+    const limit = limitParam ? parseInt(limitParam, 10) : 50;
+
+    const { data, error } = await supabaseAdmin
+      .from("transactions")
+      .select(
+        `
+        id, 
+        type, 
+        amount, 
+        description, 
+        transaction_date,
+        source_wallet:wallets!source_wallet_id(name),
+        destination_wallet:wallets!destination_wallet_id(name)
+      `,
+      )
+      .order("transaction_date", { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    const formattedData = data.map((tx: any) => ({
+      id: tx.id,
+      type: tx.type,
+      amount: tx.amount,
+      description: tx.description,
+      transaction_date: tx.transaction_date,
+      source_wallet_name: tx.source_wallet ? tx.source_wallet.name : null,
+      destination_wallet_name: tx.destination_wallet
+        ? tx.destination_wallet.name
+        : null,
+    }));
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Berhasil mengambil riwayat transaksi",
+        data: formattedData,
+      },
+      { status: 200 },
+    );
+  } catch (error: any) {
+    console.error("GET Transactions Error:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Gagal mengambil riwayat transaksi",
+        error: error.message,
+      },
+      { status: 500 },
+    );
+  }
+}
