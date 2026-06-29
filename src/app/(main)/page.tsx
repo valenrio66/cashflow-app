@@ -1,4 +1,5 @@
 import BalanceCard from "@/components/shared/BalanceCard";
+import LogoutButton from "@/components/shared/LogoutButton";
 import RecentTransactions from "@/components/shared/RecentTransactions";
 import { Bell } from "lucide-react";
 
@@ -18,6 +19,8 @@ export default function HomePage() {
           <Bell size={18} />
           <span className="absolute top-2.5 right-3 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
         </button>
+
+        <LogoutButton />
       </div>
 
       <BalanceCard />
