@@ -34,10 +34,18 @@ export async function proxy(request: NextRequest) {
   const isApiRoute = request.nextUrl.pathname.startsWith("/api");
   const isLoginRoute = request.nextUrl.pathname.startsWith("/login");
 
+  const incomingApiKey = request.headers.get("x-api-key");
+  const isValidApiKey = incomingApiKey === process.env.API_SECRET_KEY;
+
   if (!user && !isLoginRoute) {
+    if (isApiRoute && isValidApiKey) {
+      return supabaseResponse;
+    }
+
     if (isApiRoute) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
