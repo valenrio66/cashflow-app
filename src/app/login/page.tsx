@@ -1,7 +1,8 @@
 "use client";
 
 import { createBrowserClient } from "@supabase/ssr";
-import { Loader2, Lock, Mail, ShieldCheck } from "lucide-react";
+import { Loader2, Lock, Mail } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -40,14 +41,20 @@ export default function LoginPage() {
     <div className="min-h-dvh bg-slate-50 flex flex-col items-center justify-center p-5 font-sans">
       <div className="w-full max-w-sm bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100">
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-4">
-            <ShieldCheck size={32} strokeWidth={2.5} />
+          <div className="mb-4 relative w-16 h-16 drop-shadow-sm">
+            <Image
+              src="/icons/icon-192x192.png"
+              alt="Logo Catatan Keuangan"
+              fill
+              className="object-contain rounded-2xl"
+              priority
+            />
           </div>
           <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
             Selamat Datang
           </h1>
           <p className="text-sm text-slate-500 mt-1 font-medium">
-            Silakan masuk ke Catatan Keuangan
+            Silakan masuk ke Cashflow App
           </p>
         </div>
 

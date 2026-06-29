@@ -1,7 +1,9 @@
+"use client";
+
 import BalanceCard from "@/components/shared/BalanceCard";
 import LogoutButton from "@/components/shared/LogoutButton";
+import NotificationBell from "@/components/shared/NotificationBell";
 import RecentTransactions from "@/components/shared/RecentTransactions";
-import { Bell } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -15,12 +17,11 @@ export default function HomePage() {
             Catatan Keuangan
           </h1>
         </div>
-        <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 bg-white hover:bg-slate-50 transition-colors relative">
-          <Bell size={18} />
-          <span className="absolute top-2.5 right-3 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
-        </button>
 
-        <LogoutButton />
+        <div className="flex items-center gap-2">
+          <NotificationBell />
+          <LogoutButton />
+        </div>
       </div>
 
       <BalanceCard />
